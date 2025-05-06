@@ -56,6 +56,12 @@ class TrainingService(nn.Module):
         """_max_genres getter"""
 
         return self._max_genres
+    
+    @property
+    def audio_tokenizer(self):
+        """_audio_tokenizer getter"""
+
+        return self._audio_tokenizer
 
     def _split_train_test_set(self):
         """Split train, test set from dataset"""
@@ -128,7 +134,8 @@ class TrainingService(nn.Module):
                 title="Original Audio after convert to Spectrogram and back to Audio"
             )
 
-    def loss_function(self, recon_x, x, mu, logvar):
+    @staticmethod
+    def loss_function(recon_x, x, mu, logvar):
         """Loss Function"""
 
         recon_loss = nn.functional.mse_loss(recon_x, x, reduction="sum")
@@ -158,7 +165,7 @@ class TrainingService(nn.Module):
                 optimizer.zero_grad()
 
                 recon, mu, logvar = model(data, genres_input)
-                loss = self.loss_function(recon, data, mu, logvar)
+                loss = self.__class__.loss_function(recon, data, mu, logvar)
                 loss.backward()
                 train_loss += loss.item()
                 optimizer.step()

@@ -830,3 +830,4 @@ ypy-websocket==0.8.4
 zict==3.0.0
 zipp==3.21.0
 zstandard==0.23.0
+python-dotenv
