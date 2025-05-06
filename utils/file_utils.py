@@ -1,7 +1,8 @@
 import json
 import os
 import torch
-
+import gzip
+import io
 
 class FileUtils:
     """File Utils"""
@@ -41,7 +42,12 @@ class FileUtils:
             if file_ext.lower() != ".pt":
                 raise ValueError(f"File {save_file_path} is not pt")
 
-            torch.save(data, save_file_path)
+            with gzip.open(f"{save_file_path}.gz", "wb") as f:
+                buffer = io.BytesIO()
+                torch.save(data, buffer)
+                buffer.seek(0)
+                f.write(buffer.read())
+
             print(f"Data successfully saved to {save_file_path}")
         except Exception as e:
             print(f"Error saving data to Tensor file: {e}")
@@ -51,10 +57,13 @@ class FileUtils:
         """Load tensor file"""
 
         try:
-            if map_location:
-                return torch.load(file_path, map_location=map_location)
-            else:
-                return torch.load(file_path)
+            with gzip.open(f"{file_path}.gz", "rb") as f:
+                buffer = io.BytesIO(f.read())
+
+                if map_location:
+                    return torch.load(buffer, map_location=map_location)
+                else:
+                    return torch.load(buffer)
         except Exception as e:
             print(f"Error to load Tensor file: {e}")
 
