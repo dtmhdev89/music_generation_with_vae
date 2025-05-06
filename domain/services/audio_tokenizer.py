@@ -4,16 +4,16 @@ import numpy as np
 class AudioTokenizer:
     """Audio Tokenizer"""
 
-    def __init__(self, unique_gernes) -> None:
-        self.__unique_gernes = unique_gernes
+    def __init__(self, unique_genres) -> None:
+        self.__unique_genres = unique_genres
         self.__genres2idx = self._make_genres2idx()
         self.__idx2gernes = self._make_idx2genres()
 
     @property
-    def unique_gernes(self):
-        """__unique_gernes getter"""
+    def unique_genres(self):
+        """__unique_genres getter"""
 
-        return self.__unique_gernes
+        return self.__unique_genres
 
     @property
     def genres2idx(self):
