@@ -40,16 +40,14 @@ class AudioDataset(Dataset):
 
         audios_preload_path = os.path.join(
             Constant.PRELOAD_DATA_PATH,
-            "transformed_audios.json"
+            "transformed_audios.pt"
         )
 
         if (not force_audio_process) and (os.path.exists(audios_preload_path)):
-            audios = FileUtils.load_data(audios_preload_path)
+            audios = FileUtils.load_tensor_data(audios_preload_path)
         else:
             audios = self._transform_audios()
-            print(type(audios))
-            print(audios[0])
-            FileUtils.save_data(
+            FileUtils.save_tensor_data(
                 data=audios,
                 save_file_path=audios_preload_path
             )
