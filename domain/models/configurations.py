@@ -35,7 +35,6 @@ class Configurations:
             "n_genres"
         ]
 
-    @property
     def to_dict(self):
         return {
             k: getattr(self, f"_{k}")
