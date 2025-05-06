@@ -2,7 +2,7 @@ import numpy as np
 import torch.nn as nn
 import torch
 from music_generation_with_vae.domain.models.cvae import CVAE
-from music_generation_with_vae.domain.services.audio.audio_dataset_preprocess import AudioDatasetPreprocess
+from music_generation_with_vae.domain.services.audio_dataset_preprocess import AudioDatasetPreprocess
 from music_generation_with_vae.application.training_service import TrainingService
 
 
