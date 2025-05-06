@@ -27,7 +27,10 @@ class CVAEInference(nn.Module):
             n_mels=inference_configs["n_mels"],
             n_genres=inference_configs["n_genres"]
         ).to(device)
-        self.__model.load_state_dict(torch.load(weight_path))
+        self.__model.load_state_dict(
+            torch.load(weight_path),
+            map_location=device
+        )
         self.__model.eval()
         self._audio_tokenizer = audio_tokenizer
 
