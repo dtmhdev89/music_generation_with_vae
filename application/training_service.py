@@ -22,7 +22,7 @@ from music_generation_with_vae.configs.constant import Constant
 from music_generation_with_vae.domain.services.audio_dataset_preprocess import AudioDatasetPreprocess
 from music_generation_with_vae.domain.services.audio_genres_extraction import AudioGenresExtraction
 from music_generation_with_vae.domain.models.audio_dataset import AudioDataset
-from music_generation_with_vae.domain.models.audio_tokenizer import AudioTokenizer
+from music_generation_with_vae.domain.services.audio_tokenizer import AudioTokenizer
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
