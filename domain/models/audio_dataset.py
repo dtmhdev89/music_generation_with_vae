@@ -47,6 +47,8 @@ class AudioDataset(Dataset):
             audios = FileUtils.load_data(audios_preload_path)
         else:
             audios = self._transform_audios()
+            print(type(audios))
+            print(audios[0])
             FileUtils.save_data(
                 data=audios,
                 save_file_path=audios_preload_path

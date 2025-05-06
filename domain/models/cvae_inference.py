@@ -74,8 +74,8 @@ class CVAEInference(nn.Module):
             data, old_genres_input, ori_data = next(iter(dataloader))
             data = data.to(device)
 
-            genres_tokens = self.audio_tokenizer.tokenize(genres_list)
-            genres_input = self.audio_tokenizer.onehot_encode(genres_tokens, self.model.n_genres)
+            genres_tokens = self._audio_tokenizer.tokenize(genres_list)
+            genres_input = self._audio_tokenizer.onehot_encode(genres_tokens, self.model.n_genres)
             genres_input = torch.tensor(
                 genres_input, dtype=torch.long
             ).unsqueeze(0)
