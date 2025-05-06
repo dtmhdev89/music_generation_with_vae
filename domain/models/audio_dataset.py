@@ -47,14 +47,13 @@ class AudioDataset(Dataset):
             audios = FileUtils.load_data(audios_preload_path)
         else:
             audios = self._transform_audios()
+            FileUtils.save_data(
+                data=audios,
+                save_file_path=audios_preload_path
+            )
 
         self.audios = audios[:len(audios) - testset_amount]
         self.testset = audios[len(audios) - testset_amount:]
-
-        FileUtils.save_data(
-            data=self.audios,
-            save_file_path=audios_preload_path
-        )
 
         print(f"Loaded {len(self.audios)} audio segments from {len(self.files)} files, each with shape: {self.audios[0][0].shape}, {self.audios[0][1].shape}, duration: {duration} seconds")
         print(f"Test set: {len(self.testset)} audio segments")
@@ -114,7 +113,7 @@ class AudioDataset(Dataset):
                 ).unsqueeze(0)
                 audios.append((mel_spec_norm, genres_input, mel_spec))
 
-            return audios
+        return audios
 
     def __len__(self):
         """Dataset len"""
