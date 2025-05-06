@@ -12,15 +12,15 @@ class Configurations:
         lr: float | None = 2e-4,
         num_epochs: int | None = 100
     ) -> None:
-        self.__d_model = d_model
-        self.__latent_dim = latent_dim
-        self.__gamma = gamma
-        self.__lr = lr
-        self.__num_epochs = num_epochs
-        self.__step_size = self.__num_epochs // 2
-        self.__verbose_interval = self.__num_epochs // 10
-        self.__n_mels = n_mels
-        self.__n_genres = n_genres
+        self._d_model = d_model
+        self._latent_dim = latent_dim
+        self._gamma = gamma
+        self._lr = lr
+        self._num_epochs = num_epochs
+        self._step_size = self._num_epochs // 2
+        self._verbose_interval = self._num_epochs // 10
+        self._n_mels = n_mels
+        self._n_genres = n_genres
 
     def __key_list(self) -> List[str]:
         return [
@@ -38,6 +38,6 @@ class Configurations:
     @property
     def to_dict(self):
         return {
-            k: getattr(self, f"__{k}")
+            k: getattr(self, f"_{k}")
             for k in self.__key_list()
         }
