@@ -38,7 +38,7 @@ class FileUtils:
 
         try:
             _, file_ext = os.path.splitext(save_file_path)
-            if file_ext.lower() != "pt":
+            if file_ext.lower() != ".pt":
                 raise ValueError(f"File {save_file_path} is not pt")
 
             torch.save(data, save_file_path)
