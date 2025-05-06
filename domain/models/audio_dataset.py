@@ -2,8 +2,10 @@ import os
 import torch
 from torch.utils.data import Dataset
 from tqdm import tqdm
+from music_generation_with_vae.utils.file_utils import FileUtils
 from music_generation_with_vae.domain.services.audio_dataset_preprocess import AudioDatasetPreprocess
 from music_generation_with_vae.domain.services.audio_tokenizer import AudioTokenizer
+from music_generation_with_vae.configs.constant import Constant
 
 
 class AudioDataset(Dataset):
@@ -17,6 +19,7 @@ class AudioDataset(Dataset):
         n_genres,
         audio_tokenizer: AudioTokenizer,
         testset_amount=10,
+        force_audio_process=False
     ):
         self.data_dir = data_dir
         self.files = [
@@ -35,11 +38,35 @@ class AudioDataset(Dataset):
         self.n_mels = n_mels
         self._audio_tokenizer = audio_tokenizer
 
+        audios_preload_path = os.path.join(
+            Constant.PRELOAD_DATA_PATH,
+            "transformed_audios.json"
+        )
+
+        if (not force_audio_process) and (os.path.exists(audios_preload_path)):
+            audios = FileUtils.load_data(audios_preload_path)
+        else:
+            audios = self._transform_audios()
+
+        self.audios = audios[:len(audios) - testset_amount]
+        self.testset = audios[len(audios) - testset_amount:]
+
+        FileUtils.save_data(
+            data=self.audios,
+            save_file_path=audios_preload_path
+        )
+
+        print(f"Loaded {len(self.audios)} audio segments from {len(self.files)} files, each with shape: {self.audios[0][0].shape}, {self.audios[0][1].shape}, duration: {duration} seconds")
+        print(f"Test set: {len(self.testset)} audio segments")
+
+    def _transform_audios(self):
+        """Transform audios"""
+
         audios = []
 
         for file_path, json_file_path in tqdm(
             zip(self.files, self.json_files),
-            desc=f"Loading audio files in {data_dir}",
+            desc=f"Loading audio files in {self.data_dir}",
             unit="file",
             total=len(self.files)
         ):
@@ -87,10 +114,7 @@ class AudioDataset(Dataset):
                 ).unsqueeze(0)
                 audios.append((mel_spec_norm, genres_input, mel_spec))
 
-        self.audios = audios[:len(audios) - testset_amount]
-        self.testset = audios[len(audios) - testset_amount:]
-        print(f"Loaded {len(self.audios)} audio segments from {len(self.files)} files, each with shape: {self.audios[0][0].shape}, {self.audios[0][1].shape}, duration: {duration} seconds")
-        print(f"Test set: {len(self.testset)} audio segments")
+            return audios
 
     def __len__(self):
         """Dataset len"""

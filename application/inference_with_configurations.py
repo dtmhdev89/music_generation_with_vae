@@ -2,8 +2,6 @@ from music_generation_with_vae.application.training_service import TrainingServi
 from music_generation_with_vae.domain.models.cvae_inference import CVAEInference
 from music_generation_with_vae.domain.models.configurations import Configurations
 import os
-import torch
-import time
 from dotenv import load_dotenv
 load_dotenv(
     dotenv_path=os.environ.get(
@@ -19,6 +17,8 @@ if __name__ == "__main__":
     gamma = 0.5
 
     training_service = TrainingService()
+    trainloader, testloader = training_service.make_train_test_loader()
+    frame = trainloader.dataset.audios[0][0].shape[-1]
 
     inferent_configs = Configurations(
         d_model=d_model,
@@ -27,12 +27,11 @@ if __name__ == "__main__":
         num_epochs=num_epochs,
         gamma=gamma,
         n_mels=training_service.n_mels,
-        n_genres=training_service.max_genres
+        n_genres=training_service.max_genres,
+        n_frames=frame
     ).to_dict()
 
     audio_tokenizer = training_service.audio_tokenizer
-
-    _, testloader = training_service.make_train_test_loader()
 
     model = CVAEInference(
         weight_path=os.environ.get("WEIGHT_PATH"),

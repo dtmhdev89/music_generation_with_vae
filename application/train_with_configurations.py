@@ -27,13 +27,14 @@ if __name__ == "__main__":
         num_epochs=num_epochs,
         gamma=gamma,
         n_mels=training_service.n_mels,
-        n_genres=training_service.max_genres
+        n_genres=training_service.max_genres,
+        n_frames=frame
     ).to_dict()
 
     model = CVAE(
         d_model=train_configs["d_model"],
         latent_dim=train_configs["latent_dim"],
-        n_frames=train_configs,
+        n_frames=train_configs["n_frames"],
         n_mels=train_configs["n_mels"],
         n_genres=train_configs["n_genres"]
     ).to(device)

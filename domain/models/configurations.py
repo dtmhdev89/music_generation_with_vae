@@ -9,6 +9,7 @@ class Configurations:
         gamma: float,
         n_mels: int,
         n_genres: int,
+        n_frames: int,
         lr: float | None = 2e-4,
         num_epochs: int | None = 100
     ) -> None:
@@ -21,6 +22,7 @@ class Configurations:
         self._verbose_interval = self._num_epochs // 10
         self._n_mels = n_mels
         self._n_genres = n_genres
+        self._n_frames = n_frames
 
     def __key_list(self) -> List[str]:
         return [
@@ -32,7 +34,8 @@ class Configurations:
             "step_size",
             "verbose_interval",
             "n_mels",
-            "n_genres"
+            "n_genres",
+            "n_frames"
         ]
 
     def to_dict(self):
