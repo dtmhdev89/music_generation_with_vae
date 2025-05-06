@@ -19,7 +19,7 @@ from IPython.display import Audio
 from tqdm import tqdm
 
 from music_generation_with_vae.configs.constant import Constant
-from music_generation_with_vae.domain.services.audio.audio_dataset_preprocess import AudioDatasetPreprocess
+from music_generation_with_vae.domain.services.audio_dataset_preprocess import AudioDatasetPreprocess
 from music_generation_with_vae.domain.services.audio_genres_extraction import AudioGenresExtraction
 from music_generation_with_vae.domain.models.audio_dataset import AudioDataset
 from music_generation_with_vae.domain.models.audio_tokenizer import AudioTokenizer
