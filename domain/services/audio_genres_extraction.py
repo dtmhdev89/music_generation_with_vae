@@ -24,7 +24,9 @@ class AudioGenresExtraction:
         )
 
         if (not force) and os.path.exists(unique_genres_path):
-            unique_genres = AudioGenresExtraction.load_data(unique_genres_path)
+            unique_genres = set(
+                AudioGenresExtraction.load_data(unique_genres_path)
+            )
         else:
             for filename in os.listdir(self.json_dir):
                 if filename.endswith('.json'):
@@ -52,6 +54,9 @@ class AudioGenresExtraction:
     def save_data(data, save_file_path):
         try:
             with open(save_file_path, "w") as f:
+                if isinstance(data, set):
+                    data = list(data)
+
                 json.dump(data, f, indent=4)
             print(f"Data successfully saved to {save_file_path}")
         except Exception as e:
