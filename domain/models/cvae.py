@@ -74,12 +74,7 @@ class CVAE(nn.Module):
         genres_embed = ori_genres_embed.unsqueeze(-1).unsqueeze(-1)
         genres_embed = genres_embed.expand(-1, -1, x.size(2), x.size(3))
         x_genres = torch.cat((x, genres_embed), dim=1)
-        print("--------input after concat")
-        print(x.shape, genres_input.shape)
-        print(ori_genres_embed.shape)
-        print(genres_embed.shape)
-        print(x_genres.shape)
-        
+
         h = x_genres
         shortcuts = []
         for block in self.encoder:
@@ -96,11 +91,18 @@ class CVAE(nn.Module):
         h_dec = self.decoder_input(z_genres)
         h_dec = h_dec.view(-1, self.d_model * 4, self.n_frames, self.n_mels)
 
+        print("-------input at hdec and shortcut")
+
         for block in self.decoder:
             if isinstance(block, nn.ConvTranspose2d) and shortcuts:
                 shortcut = shortcuts.pop()
+                print(h_dec.shape)
+                print(shortcut.shape)
+                print("=======")
                 h_dec = h_dec + shortcut
             h_dec = block(h_dec)
+
+        raise ValueError("stopppp")
 
         recon = h_dec[:, :, :x.size(2), :x.size(3)]
 
