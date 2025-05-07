@@ -44,10 +44,10 @@ class AudioDataset(Dataset):
         )
 
         if (not force_audio_process) and (os.path.exists(audios_preload_path)):
-            audios = FileUtils.load_tensor_data(audios_preload_path)
+            audios = FileUtils.load_tensor_data_with_hdf5(audios_preload_path)
         else:
             audios = self._transform_audios()
-            FileUtils.save_tensor_data(
+            FileUtils.save_tensor_data_with_hdf5(
                 data=audios,
                 save_file_path=audios_preload_path
             )
