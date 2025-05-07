@@ -119,3 +119,70 @@ class FileUtils:
         except Exception as e:
             print(f"Error loading data to Tensor file: {e}")
 
+    @staticmethod
+    def save_audios_data_with_hdf5(data, save_file_path):
+        """Save Tensor data with HDF5 for audios dataset only"""
+
+        try:
+            _, file_ext = os.path.splitext(save_file_path)
+            if file_ext.lower() != ".h5":
+                raise ValueError(f"File {save_file_path} is not .h5")
+
+            with h5py.File(save_file_path, "w") as f:
+                for i, (mel_spec_norm, genres_input, mel_spec) in enumerate(data):
+                    f.create_dataset(
+                        f"mel_spec_norm_{i}",
+                        data=mel_spec_norm.numpy(),
+                        compression="gzip"
+                    )
+                    f.create_dataset(
+                        f"genres_input_{i}",
+                        data=genres_input.numpy(),
+                        compression="gzip"
+                    )
+                    f.create_dataset(
+                        f"mel_spec_{i}",
+                        data=mel_spec.numpy(),
+                        compression="gzip"
+                    )
+                
+                f.attrs["length"] = len(data)
+
+            print(f"Audios Data successfully saved to {save_file_path}")
+        except Exception as e:
+            print(f"Error saving data to Tensor file: {e}")
+
+    @staticmethod
+    def load_audios_data_with_hdf5(file_path):
+        """Load numpy data from h5 file and convert it into Tensor"""
+
+        try:
+            _, file_ext = os.path.splitext(file_path)
+            if file_ext.lower() != ".h5":
+                raise ValueError(f"File {file_path} is not .h5")
+            
+            loaded_tensors = []
+
+            with h5py.File(file_path, "r") as f:
+                num_samples = f.attrs["length"]
+
+                for i in range(num_samples):
+                    mel_spec_norm = torch.from_numpy(
+                        f[f"mel_spec_norm_{i}"][()]
+                    )
+                    genres_input = torch.from_numpy(
+                        f[f"genres_input_{i}"][()]
+                    )
+                    mel_spec = torch.from_numpy(
+                        f[f"mel_spec_{i}"][()]
+                    )
+
+                    loaded_tensors.append(
+                        (mel_spec_norm, genres_input, mel_spec)
+                    )
+
+            print(f"Data successfully loaded from {file_path}")
+
+            return loaded_tensors
+        except Exception as e:
+            print(f"Error loading data to Tensor file: {e}")
