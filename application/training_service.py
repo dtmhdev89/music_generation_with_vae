@@ -62,7 +62,7 @@ class TrainingService(nn.Module):
             duration=self._duration,
             n_mels=self._n_mels,
             n_genres=self._max_genres,
-            testset_amount=10,
+            testset_amount=self._testset_amount,
             audio_tokenizer=self._audio_tokenizer
         )
 

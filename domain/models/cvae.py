@@ -74,7 +74,12 @@ class CVAE(nn.Module):
         genres_embed = ori_genres_embed.unsqueeze(-1).unsqueeze(-1)
         genres_embed = genres_embed.expand(-1, -1, x.size(2), x.size(3))
         x_genres = torch.cat((x, genres_embed), dim=1)
-
+        print("--------input after concat")
+        print(x.shape, genres_input.shape)
+        print(ori_genres_embed.shape)
+        print(genres_embed.shape)
+        print(x_genres.shape)
+        
         h = x_genres
         shortcuts = []
         for block in self.encoder:
