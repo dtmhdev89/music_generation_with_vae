@@ -40,7 +40,7 @@ class AudioDataset(Dataset):
 
         audios_preload_path = os.path.join(
             Constant.PRELOAD_DATA_PATH,
-            "transformed_audios.pt"
+            "transformed_audios.h5"
         )
 
         if (not force_audio_process) and (os.path.exists(audios_preload_path)):
