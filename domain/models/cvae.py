@@ -20,6 +20,8 @@ class CVAE(nn.Module):
         self.n_frames = int(np.ceil(n_frames / 2**3))
         self.n_mels = int(np.ceil(n_mels / 2**3))
         self.n_genres = n_genres
+        print("-------nframes and n_mels in CVAE")
+        print(n_frames, n_mels)
         print(self.n_frames, self.n_mels)
 
         # Encoder
