@@ -7,7 +7,7 @@ class AudioTokenizer:
     def __init__(self, unique_genres) -> None:
         self.__unique_genres = unique_genres
         self.__genres2idx = self._make_genres2idx()
-        self.__idx2gernes = self._make_idx2genres()
+        self.__idx2genres = self._make_idx2genres()
 
     @property
     def unique_genres(self):
@@ -25,13 +25,13 @@ class AudioTokenizer:
         return self.__genres2idx
 
     @property
-    def idx2gernes(self):
-        """__idx2gernes getter"""
+    def idx2genres(self):
+        """__idx2genres getter"""
         
-        if self.__idx2gernes is None:
-            self.__idx2gernes = self._make_idx2gernes()
+        if self.__idx2genres is None:
+            self.__idx2genres = self._make_idx2genres()
         
-        return self.__idx2gernes
+        return self.__idx2genres
             
     def _make_genres2idx(self):
         """Make each gerne to index"""
